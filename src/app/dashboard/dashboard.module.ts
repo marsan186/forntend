@@ -13,9 +13,10 @@ import { DashboardRoutingModule } from './dashboard-routing.module';
 import { SidebarComponent } from './layout/sidebar/sidebar.component';
 import { HeaderComponent } from './layout/header/header.component';
 import { MainLayoutComponent } from './layout/main-layout/main-layout.component';
+import { RegisterComponent } from './register/register.component';
 
 @NgModule({
-  declarations: [LoginComponent, VendorComponent, UserComponent, HomeComponent, P404Component, P500Component, SidebarComponent, HeaderComponent, MainLayoutComponent],
+  declarations: [LoginComponent, VendorComponent, UserComponent, HomeComponent, P404Component, P500Component, SidebarComponent, HeaderComponent, MainLayoutComponent, RegisterComponent],
   imports: [
     CommonModule,
     DashboardRoutingModule,
