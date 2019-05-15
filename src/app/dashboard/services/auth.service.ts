@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
 import { HttpClient } from '@angular/common/http';
+import { Globals } from '../../globals';
+
 @Injectable({
   providedIn: 'root'
 })
 export class AuthService {
 
-  constructor(private _router: Router, private _http: HttpClient) { }
+  constructor(private _router: Router, private _http: HttpClient,private cons: Globals) { }
 
   register(admin) {
        let object={
@@ -16,10 +18,10 @@ export class AuthService {
         contact_number: admin.phone
        }
 
-    return this._http.post("http://localhost:3000/admin/register", object);
+    return this._http.post(this.cons.url+"admin/register", object);
   }
   login(admin) {
-    return this._http.post("http://localhost:3000/admin/login", admin);
+    return this._http.post(this.cons.url+"admin/login", admin);
     // localStorage.setItem('user', user)
   }
 

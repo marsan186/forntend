@@ -34,7 +34,6 @@ export class RegisterComponent implements OnInit {
   registerForm(formData: any, formDirective: FormGroupDirective) {
     this.submitted = true;
 
-    console.log("dasdsa");
     if (this.register.invalid) {
       return;
     }

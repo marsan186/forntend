@@ -24,10 +24,10 @@ export class HomeComponent implements OnInit {
       this.adminService.getVendor().subscribe(data => {
         this.noOfVendors = data.length;       
       });
-      this.adminService.getDeliveryBoy().subscribe(data => {
+    /*  this.adminService.getDeliveryBoy().subscribe(data => {
         this.noOfDevelieryBoy = data.length;       
       });
-    
+    */
 
   }
   
