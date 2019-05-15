@@ -14,6 +14,7 @@ export class HeaderComponent implements OnInit {
   public href: string = "";  
   restData:any;
   registerForm: FormGroup;
+  registerForm1:FormGroup;
   submitted = false;
   loggedStatus =false;
   userData:any={};
@@ -80,7 +81,9 @@ get f() { return this.registerForm.controls; }
         alert('SUCCESS!! :-)\n\n')
     }
 
+    login1(){
 
+    }
     
   login() {
 
