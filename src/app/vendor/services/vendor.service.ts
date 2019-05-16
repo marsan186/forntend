@@ -2,16 +2,19 @@
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
-
+import { Globals } from '../../globals';
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const apiUrl = "vendor";
-const baseUrl: string = "http://localhost:3000";
+
 const localstorage = JSON.parse(localStorage.getItem('vendor'));
 @Injectable()
 export class VendorService {
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private myglobals: Globals) { }
+
+  apiUrl = "vendor";
+  baseUrl: string = this.myglobals.url;
+
   private handleError(error: HttpErrorResponse) {
     if (error.error instanceof ErrorEvent) {
       // A client-side or network error occurred. Handle it accordingly.
@@ -39,7 +42,7 @@ export class VendorService {
   } */
 
   getVendor(username: string): Observable<any> {
-    const url = `${baseUrl}/${apiUrl}/${username}`;
+    const url = `${this.baseUrl}${this.apiUrl}/${username}`;
     return this.http.get(url, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleError));
@@ -49,7 +52,7 @@ export class VendorService {
     console.log(user_name);
     console.log(data);
     data.audit_user = user_name;
-    return this.http.put(`${baseUrl}/${apiUrl}/${user_name}`, data, httpOptions)
+    return this.http.put(`${this.baseUrl}${this.apiUrl}/${user_name}`, data, httpOptions)
 
       .pipe(
         catchError(this.handleError)
@@ -57,7 +60,7 @@ export class VendorService {
   }
 
   deleteVendor(id: string): Observable<{}> {
-    const url = `${baseUrl}/${apiUrl}/${id}`;
+    const url = `${this.baseUrl}${this.apiUrl}/${id}`;
     return this.http.delete(url, httpOptions)
       .pipe(
         catchError(this.handleError)
@@ -65,8 +68,10 @@ export class VendorService {
   }
 
   getOrdersBelongsToVendor(): Observable<any> {
+
     const sub = 'orders/getorders';
-    const url = `${baseUrl}/${sub}/${localstorage.vendor_id}`;
+    const url = `${this.baseUrl}${sub}/${localstorage.vendor_id}`;
+    console.log(url);
     return this.http.get(url, httpOptions).pipe(
       map(this.extractData),
       catchError(this.handleError));
@@ -74,7 +79,7 @@ export class VendorService {
 
   updateOrder(id, data): Observable<any> {
     const sub = 'orders';
-    return this.http.put(`${baseUrl}/${sub}/${id}`, data, httpOptions)
+    return this.http.put(`${this.baseUrl}${sub}/${id}`, data, httpOptions)
       .pipe(
         catchError(this.handleError)
       );

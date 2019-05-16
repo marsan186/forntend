@@ -3,16 +3,20 @@ import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http
 import { catchError, tap, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Globals } from '../../globals';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const apiUrl = "vendor";
-const baseUrl: string = "http://localhost:3000";
+
 
 @Injectable()
 export class AuthService {
-    constructor(private http: HttpClient, private router: Router) { }
+    constructor(private http: HttpClient, private router: Router, private myglobals: Globals) { }
+
+    apiUrl = "vendor";
+    baseUrl: string = this.myglobals.url;
+
     private handleError(error: HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {
             // A client-side or network error occurred. Handle it accordingly.
@@ -29,7 +33,7 @@ export class AuthService {
     };
 
     postVendor(data): Observable<any> {
-        return this.http.post(`${baseUrl}/${apiUrl}`, data, httpOptions)
+        return this.http.post(`${this.baseUrl}${this.apiUrl}`, data, httpOptions)
             .pipe(
                 catchError(this.handleError)
             );
@@ -37,11 +41,11 @@ export class AuthService {
 
     vendorLogin(data): Observable<any> {
         var sub: string = 'login';
-        return this.http.post<{ token: string }>(`${baseUrl}/${apiUrl}/${sub}`, { data });
+        return this.http.post<{ token: string }>(`${this.baseUrl}${this.apiUrl}/${sub}`, { data });
     }
     resetpassword(data): Observable<any> {
         var sub: string = 'forgotpassword';
-        return this.http.post(`${baseUrl}/${apiUrl}/${sub}`, data, httpOptions)
+        return this.http.post(`${this.baseUrl}${this.apiUrl}/${sub}`, data, httpOptions)
             .pipe(
                 catchError(this.handleError)
             );

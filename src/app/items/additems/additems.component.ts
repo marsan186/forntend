@@ -21,10 +21,10 @@ export interface Types {
 export class AdditemsComponent implements OnInit {
   itemForm: FormGroup;
   item_available_at: Types[] = [
-    { value: '0', viewValue: 'Morning' },
-    { value: '1', viewValue: 'AfterNoon' },
-    { value: '2', viewValue: 'Night' },
-    { value: '3', viewValue: 'Evening' },
+    { value: 'Morning', viewValue: 'Morning' },
+    { value: 'AfterNoon', viewValue: 'AfterNoon' },
+    { value: 'Night', viewValue: 'Night' },
+    { value: 'Evening', viewValue: 'Evening' },
   ];
   image_url = null;
 

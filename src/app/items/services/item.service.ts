@@ -2,18 +2,21 @@ import { Observable, of, throwError } from 'rxjs';
 import { HttpClient, HttpHeaders, HttpErrorResponse } from '@angular/common/http';
 import { catchError, tap, map } from 'rxjs/operators';
 import { Injectable } from '@angular/core';
+import { Globals } from '../../globals';
 
 const httpOptions = {
     headers: new HttpHeaders({ 'Content-Type': 'application/json' })
 };
-const apiUrl = "items";
-const baseUrl: string = "http://localhost:3000";
-const localVendorstorage = JSON.parse(localStorage.getItem('vendor'));
 
+const localVendorstorage = JSON.parse(localStorage.getItem('vendor'));
 
 @Injectable()
 export class ItemService {
-    constructor(private http: HttpClient) { }
+    constructor(private http: HttpClient, private myglobals: Globals) { }
+
+    apiUrl = "items";
+    baseUrl: string = this.myglobals.url;
+
     private handleError(error: HttpErrorResponse) {
         if (error.error instanceof ErrorEvent) {
             // A client-side or network error occurred. Handle it accordingly.
@@ -36,9 +39,9 @@ export class ItemService {
 
     createItem(data): Observable<any> {
         var additem = 'additem';
-        data["belongs_To"] = localVendorstorage['vendor_id'];
+        data["belongs_To"] = localVendorstorage.vendor_id;
         console.log(data);
-        return this.http.post(`${baseUrl}/${apiUrl}/${additem}`, data, httpOptions)
+        return this.http.post(`${this.baseUrl}${this.apiUrl}/${additem}`, data, httpOptions)
             .pipe(
                 catchError(this.handleError)
             );
@@ -51,30 +54,30 @@ export class ItemService {
     } */
 
     getItemsBelongsToVendor(): Observable<any> {
-        console.log(localVendorstorage['vendor_id']);
+        console.log(localVendorstorage.vendor_id);
         var getitems = 'getitems';
-        const url = `${baseUrl}/${apiUrl}/${getitems}/${localVendorstorage['vendor_id']}`;
+        const url = `${this.baseUrl}${this.apiUrl}/${getitems}/${localVendorstorage['vendor_id']}`;
         return this.http.get(url, httpOptions).pipe(
             map(this.extractData),
             catchError(this.handleError));
     }
 
     getItemBelongsToVendor(id): Observable<any> {
-        const url = `${baseUrl}/${apiUrl}//${localVendorstorage['vendor_id']}/${id}`;
+        const url = `${this.baseUrl}${this.apiUrl}//${localVendorstorage['vendor_id']}/${id}`;
         return this.http.get(url, httpOptions).pipe(
             map(this.extractData),
             catchError(this.handleError));
     }
 
     getItem(itemno: string): Observable<any> {
-        const url = `${baseUrl}/${apiUrl}/${itemno}`;
+        const url = `${this.baseUrl}${this.apiUrl}/${itemno}`;
         return this.http.get(url, httpOptions).pipe(
             map(this.extractData),
             catchError(this.handleError));
     }
 
     updateItem(id, data): Observable<any> {
-        return this.http.put(`${baseUrl}/${apiUrl}/${localVendorstorage['vendor_id']}/${id}`, data, httpOptions)
+        return this.http.put(`${this.baseUrl}${this.apiUrl}/${localVendorstorage['vendor_id']}/${id}`, data, httpOptions)
             .pipe(
                 catchError(this.handleError)
             );
@@ -82,7 +85,7 @@ export class ItemService {
 
     deleteItem(id: string): Observable<{}> {
         var deleteitem = 'deleteitem';
-        return this.http.put(`${baseUrl}/${apiUrl}/${deleteitem}/${localVendorstorage['vendor_id']}/${id}`, httpOptions)
+        return this.http.put(`${this.baseUrl}${this.apiUrl}/${deleteitem}/${localVendorstorage['vendor_id']}/${id}`, httpOptions)
             .pipe(
                 catchError(this.handleError)
             );

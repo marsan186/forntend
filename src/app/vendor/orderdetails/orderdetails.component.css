@@ -25,6 +25,7 @@ table {
   display: block;
   padding: 20px 0;
   justify-content: center;
+  min-height: -webkit-fill-available;
  }
 .profile-header
 {
